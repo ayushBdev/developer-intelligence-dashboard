@@ -77,3 +77,4 @@ export function RepoLanguages({ owner, name }: RepoLanguagesProps) {
         </section>
     );
 }
+

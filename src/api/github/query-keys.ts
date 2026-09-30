@@ -14,3 +14,4 @@ export const qk = {
     languages: (owner: string, name: string) =>
         ["languages", owner, name] as const,
 };
+

@@ -150,3 +150,4 @@ export function FavoritesModal({ isOpen, onClose }: FavoritesModalProps) {
         </div>
     );
 }
+

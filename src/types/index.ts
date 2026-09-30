@@ -76,3 +76,4 @@ export interface SearchParamsState {
     language?: string;
     minStars?: number;
 }
+

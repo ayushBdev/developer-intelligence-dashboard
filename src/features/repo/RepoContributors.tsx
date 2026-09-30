@@ -85,3 +85,4 @@ export function RepoContributors({ owner, name }: RepoContributorsProps) {
         </section>
     );
 }
+

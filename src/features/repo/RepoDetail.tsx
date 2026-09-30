@@ -292,3 +292,4 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
         </main>
     );
 }
+

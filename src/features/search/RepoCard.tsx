@@ -169,3 +169,4 @@ export function RepoCard({ repo }: RepoCardProps) {
         </article>
     );
 }
+
