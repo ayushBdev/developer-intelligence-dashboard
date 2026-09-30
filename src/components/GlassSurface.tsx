@@ -14,10 +14,10 @@ export function GlassSurface({
     ...props
 }: GlassSurfaceProps) {
     const levelClass = {
-        "0": "glass-0",
-        "1": "glass-1",
-        "2": "glass-2",
-        solid: "glass-solid",
+        "0": "bg-[var(--surface-muted)] border border-[var(--border)] rounded-[var(--r-md)]",
+        "1": "surface-card",
+        "2": "bg-[var(--surface)] border border-[var(--border)] rounded-[var(--r-lg)] shadow-[var(--shadow-sm)]",
+        solid: "surface-card",
     }[level];
 
     return (

@@ -10,9 +10,9 @@ export function Skeleton({ className, ...props }: SkeletonProps) {
         <div
             aria-hidden="true"
             className={cn(
-                "relative overflow-hidden bg-white/10 dark:bg-white/10 light:bg-slate-300/60 rounded-md",
-                "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite]",
-                "before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent",
+                "relative overflow-hidden bg-[var(--surface-muted)] rounded-[var(--r-sm)]",
+                "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.6s_infinite]",
+                "before:bg-gradient-to-r before:from-transparent before:via-black/[0.04] dark:before:via-white/[0.06] before:to-transparent",
                 className
             )}
             {...props}

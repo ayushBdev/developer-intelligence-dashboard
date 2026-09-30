@@ -19,21 +19,21 @@ export function StatTile({
     return (
         <div
             className={cn(
-                "flex flex-col justify-between p-4 rounded-xl glass-1 border border-white/10 shadow-sm",
+                "flex flex-col justify-between p-4 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)]",
                 className
             )}
         >
-            <div className="flex items-center justify-between gap-1.5 text-xs text-content-secondary mb-1">
+            <div className="flex items-center justify-between gap-1.5 text-xs text-[var(--text-secondary)] mb-1">
                 <span>{label}</span>
-                {icon && <span className="text-content-muted">{icon}</span>}
+                {icon && <span className="text-[var(--text-muted)]">{icon}</span>}
             </div>
 
-            <div className="text-xl sm:text-2xl font-bold text-content-primary tracking-tight">
+            <div className="text-xl sm:text-2xl font-bold text-[var(--text)] tracking-tight">
                 {value}
             </div>
 
             {subtitle && (
-                <div className="text-[11px] text-content-muted mt-1 leading-tight">
+                <div className="text-[11px] text-[var(--text-muted)] mt-1 leading-tight">
                     {subtitle}
                 </div>
             )}

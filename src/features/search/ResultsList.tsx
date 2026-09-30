@@ -41,7 +41,7 @@ export function ResultsList({
             {Array.from({ length: skeletonCount }).map((_, idx) => (
                 <div
                     key={`skeleton-${idx}`}
-                    className="p-5 rounded-2xl glass-1 border border-white/10 flex flex-col justify-between min-h-[160px]"
+                    className="p-5 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)] flex flex-col justify-between min-h-[170px]"
                 >
                     {mode === "repos" ? (
                         <div className="space-y-3">
@@ -56,7 +56,7 @@ export function ResultsList({
                                 <Skeleton className="h-3 w-full" />
                                 <Skeleton className="h-3 w-3/4" />
                             </div>
-                            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                            <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between">
                                 <Skeleton className="h-3 w-20" />
                                 <Skeleton className="h-3 w-16" />
                             </div>
@@ -70,7 +70,7 @@ export function ResultsList({
                                     <Skeleton className="h-3 w-20" />
                                 </div>
                             </div>
-                            <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                            <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between gap-2">
                                 <Skeleton className="h-4 w-16" />
                                 <Skeleton className="h-4 w-16" />
                                 <Skeleton className="h-4 w-16" />
@@ -93,7 +93,7 @@ export function ResultsList({
         );
     }
 
-    // 2. Loading State: when first loading or when fetching a new query
+    // 2. Loading State: when first loading or when fetching a new query with no existing items
     if (isLoading || (isFetching && items.length === 0)) {
         return (
             <div
@@ -131,14 +131,14 @@ export function ResultsList({
         );
     }
 
-    // 5. Results Grid
+    // 5. Results Grid: While next page loads, keep previous results at 60% opacity with aria-busy="true"
     return (
         <div
+            aria-busy={isFetching}
             className={cn(
-                "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-200",
+                "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 transition-opacity duration-150",
                 isFetching && "opacity-60 pointer-events-none"
             )}
-            aria-busy={isFetching}
         >
             {mode === "repos"
                 ? (items as RepoItem[]).map((repo) => (

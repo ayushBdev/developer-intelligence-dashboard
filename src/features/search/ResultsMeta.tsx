@@ -1,5 +1,4 @@
 import React from "react";
-import { formatCompactNumber } from "@/lib/format";
 import type { SearchMode } from "@/types";
 
 export interface ResultsMetaProps {
@@ -21,22 +20,22 @@ export function ResultsMeta({ query, mode, totalCount, isLoading = false }: Resu
     return (
         <div
             aria-live="polite"
-            className="flex flex-wrap items-center justify-between gap-2 px-1 py-2 text-sm text-content-secondary"
+            className="flex flex-wrap items-center justify-between gap-2 px-1 py-1 text-sm text-[var(--text-secondary)]"
         >
             <div className="flex items-center gap-2">
                 <span>
-                    Found <strong className="text-content-primary font-semibold">{formattedTotal}</strong>{" "}
-                    {typeLabel} for &ldquo;<span className="text-content-primary font-medium">{query}</span>&rdquo;
+                    Found <strong className="text-[var(--text)] font-semibold">{formattedTotal}</strong>{" "}
+                    {typeLabel} for &ldquo;<span className="text-[var(--text)] font-medium">{query}</span>&rdquo;
                 </span>
                 {isCapped && (
-                    <span className="text-xs bg-badge-warning/15 text-badge-warning px-2 py-0.5 rounded-full border border-badge-warning/30 font-medium">
-                        GitHub caps results at 1,000
+                    <span className="text-xs bg-[var(--warning-bg)] text-[var(--warning)] px-2 py-0.5 rounded-[var(--r-sm)] border border-[var(--warning)]/30 font-medium">
+                        Showing first 1,000 results
                     </span>
                 )}
             </div>
 
             {isLoading && (
-                <span className="text-xs text-accent font-medium animate-pulse">
+                <span className="text-xs text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)] font-medium animate-pulse">
                     Updating results...
                 </span>
             )}

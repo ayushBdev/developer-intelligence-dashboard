@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FiBook, FiUsers } from "react-icons/fi";
+import { FiBook, FiUsers, FiCheck } from "react-icons/fi";
 import { cn } from "@/lib/cn";
 import type { SearchMode } from "@/types";
 
@@ -36,7 +36,7 @@ export function ModeToggle({ value, onChange, disabled }: ModeToggleProps) {
         <div
             role="radiogroup"
             aria-label="Search target"
-            className="inline-flex p-1 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md"
+            className="inline-flex w-full md:w-auto p-1 rounded-[var(--r-sm)] bg-[var(--surface-muted)] border border-[var(--border)]"
         >
             {options.map((option, idx) => {
                 const isSelected = value === option.id;
@@ -51,14 +51,15 @@ export function ModeToggle({ value, onChange, disabled }: ModeToggleProps) {
                         onClick={() => onChange(option.id)}
                         onKeyDown={(e) => handleKeyDown(e, idx)}
                         className={cn(
-                            "relative flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                            "relative flex flex-1 md:flex-initial items-center justify-center gap-2 px-4 py-2 text-sm rounded-[var(--r-sm)] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]",
                             isSelected
-                                ? "text-content-primary bg-accent/25 border-b-2 border-accent font-semibold shadow-sm"
-                                : "text-content-secondary hover:text-content-primary hover:bg-white/5"
+                                ? "bg-[var(--primary-500)] text-white font-semibold shadow-sm"
+                                : "text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface)]"
                         )}
                     >
                         {option.icon}
                         <span>{option.label}</span>
+                        {isSelected && <FiCheck className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />}
                     </button>
                 );
             })}

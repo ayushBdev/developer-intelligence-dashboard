@@ -19,7 +19,7 @@ export function IconLink({
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-                "inline-flex items-center justify-center p-2 rounded-lg text-content-secondary hover:text-content-primary hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                "inline-flex items-center justify-center p-2 rounded-[var(--r-sm)] text-[var(--text-secondary)] hover:text-[var(--primary-500)] dark:hover:text-[var(--link,#6b93ff)] hover:bg-[var(--primary-50)] dark:hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]",
                 className
             )}
             {...props}

@@ -26,31 +26,32 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref
     ) => {
         const baseClasses =
-            "inline-flex items-center justify-center font-medium rounded-lg transition-all select-none disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas-base";
+            "inline-flex items-center justify-center font-medium rounded-[var(--r-sm)] transition-colors duration-150 select-none disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)] focus-visible:ring-offset-2";
 
         const sizeClasses = {
-            sm: "text-xs px-2.5 py-1.5 min-h-[32px] gap-1.5",
-            md: "text-sm px-4 py-2 min-h-[40px] gap-2",
-            lg: "text-base px-5 py-2.5 min-h-[46px] gap-2.5",
+            sm: "text-xs px-3 py-1.5 min-h-[36px] gap-1.5",
+            md: "text-sm px-4 py-2 min-h-[40px] sm:min-h-[40px] gap-2",
+            lg: "text-base px-5 py-2.5 min-h-[44px] gap-2.5",
         }[size];
 
         const variantClasses = {
             primary:
-                "bg-accent hover:bg-accent/90 text-white shadow-md active:translate-y-[1px]",
+                "bg-[var(--primary-500)] hover:bg-[var(--primary-600)] active:bg-[var(--primary-700)] text-white shadow-sm",
             secondary:
-                "bg-white/10 hover:bg-white/15 text-content-primary border border-white/15 backdrop-blur-md active:translate-y-[1px]",
+                "bg-[var(--surface)] hover:bg-[var(--primary-50)] dark:hover:bg-[var(--surface-muted)] text-[var(--text)] border border-[var(--border-strong)] shadow-sm",
             outline:
-                "border border-white/25 hover:border-white/40 text-content-primary hover:bg-white/5 active:translate-y-[1px]",
+                "bg-transparent hover:bg-[var(--surface-muted)] text-[var(--text)] border border-[var(--border-strong)]",
             ghost:
-                "text-content-secondary hover:text-content-primary hover:bg-white/10",
+                "text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)] hover:bg-[var(--primary-50)] dark:hover:bg-white/5 hover:underline",
             danger:
-                "bg-badge-danger hover:bg-badge-danger/90 text-white shadow-md active:translate-y-[1px]",
+                "bg-[var(--danger)] hover:bg-[#991b1b] text-white shadow-sm",
         }[variant];
 
         return (
             <button
                 ref={ref}
                 disabled={disabled || isLoading}
+                aria-disabled={disabled || isLoading}
                 className={cn(baseClasses, sizeClasses, variantClasses, className)}
                 {...props}
             >

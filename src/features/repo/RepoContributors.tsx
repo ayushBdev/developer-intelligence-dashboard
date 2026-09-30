@@ -29,16 +29,16 @@ export function RepoContributors({ owner, name }: RepoContributorsProps) {
     }
 
     return (
-        <section aria-label="Top contributors" className="flex flex-col gap-3 p-5 rounded-2xl glass-1 border border-white/10">
-            <div className="flex items-center gap-2 text-content-primary font-semibold text-sm">
-                <FiUsers className="w-4 h-4 text-accent" aria-hidden="true" />
+        <section aria-label="Top contributors" className="flex flex-col gap-3 p-5 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)]">
+            <div className="flex items-center gap-2 text-[var(--text)] font-semibold text-sm">
+                <FiUsers className="w-4 h-4 text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)]" aria-hidden="true" />
                 <span>Top Contributors</span>
             </div>
 
             {isLoading ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                     {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-white/5">
+                        <div key={i} className="flex items-center gap-2 p-2 rounded-[var(--r-sm)] bg-[var(--surface-muted)]">
                             <Skeleton className="w-7 h-7 rounded-full shrink-0" />
                             <div className="space-y-1 flex-1">
                                 <Skeleton className="h-3 w-16" />
@@ -48,7 +48,7 @@ export function RepoContributors({ owner, name }: RepoContributorsProps) {
                     ))}
                 </div>
             ) : contributors.length === 0 ? (
-                <p className="text-xs text-content-muted">No contributor information available.</p>
+                <p className="text-xs text-[var(--text-muted)]">No contributor information available.</p>
             ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                     {contributors.map((c) => (
@@ -57,7 +57,7 @@ export function RepoContributors({ owner, name }: RepoContributorsProps) {
                             href={c.htmlUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group flex items-center justify-between p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/15 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="group flex items-center justify-between p-2 rounded-[var(--r-sm)] bg-[var(--surface-muted)] hover:bg-[var(--primary-50)] dark:hover:bg-[var(--primary-500)]/15 border border-[var(--border)] hover:border-[var(--primary-200)] dark:hover:border-[var(--primary-500)]/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]"
                         >
                             <div className="flex items-center gap-2 min-w-0">
                                 <img
@@ -66,18 +66,18 @@ export function RepoContributors({ owner, name }: RepoContributorsProps) {
                                     width={28}
                                     height={28}
                                     loading="lazy"
-                                    className="w-7 h-7 rounded-full border border-white/15 object-cover shrink-0"
+                                    className="w-7 h-7 rounded-full border border-[var(--border)] object-cover shrink-0"
                                 />
                                 <div className="min-w-0">
-                                    <span className="block text-xs font-semibold text-content-primary truncate group-hover:text-accent transition-colors">
+                                    <span className="block text-xs font-semibold text-[var(--text)] truncate group-hover:text-[var(--primary-500)] dark:group-hover:text-[var(--link,#6b93ff)] transition-colors">
                                         {c.login}
                                     </span>
-                                    <span className="block text-[11px] text-content-muted">
+                                    <span className="block text-[11px] text-[var(--text-muted)]">
                                         {formatCompactNumber(c.contributions)} commits
                                     </span>
                                 </div>
                             </div>
-                            <GoLinkExternal className="w-3 h-3 text-content-muted opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-1" />
+                            <GoLinkExternal className="w-3 h-3 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 ml-1" />
                         </a>
                     ))}
                 </div>

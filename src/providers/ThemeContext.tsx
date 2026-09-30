@@ -13,23 +13,23 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setThemeState] = useState<Theme>("dark");
+    // Default light theme as per DRD v2.0
+    const [theme, setThemeState] = useState<Theme>("light");
 
     useEffect(() => {
         const saved = localStorage.getItem("dev-intel-theme") as Theme | null;
         if (saved === "light" || saved === "dark") {
             setThemeState(saved);
             document.documentElement.setAttribute("data-theme", saved);
-            if (saved === "light") {
-                document.documentElement.classList.remove("dark");
-            } else {
+            if (saved === "dark") {
                 document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
             }
         } else {
-            // Default dark
-            setThemeState("dark");
-            document.documentElement.setAttribute("data-theme", "dark");
-            document.documentElement.classList.add("dark");
+            setThemeState("light");
+            document.documentElement.setAttribute("data-theme", "light");
+            document.documentElement.classList.remove("dark");
         }
     }, []);
 
@@ -37,15 +37,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setThemeState(next);
         localStorage.setItem("dev-intel-theme", next);
         document.documentElement.setAttribute("data-theme", next);
-        if (next === "light") {
-            document.documentElement.classList.remove("dark");
-        } else {
+        if (next === "dark") {
             document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
         }
     };
 
     const toggleTheme = () => {
-        setTheme(theme === "dark" ? "light" : "dark");
+        setTheme(theme === "light" ? "dark" : "light");
     };
 
     return (

@@ -36,13 +36,13 @@ export function IssuesList({ owner, name }: IssuesListProps) {
     return (
         <section aria-label="Recent repository issues" className="flex flex-col gap-4 mt-8">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-content-primary tracking-tight">
+                <h2 className="text-xl font-bold text-[var(--text)] tracking-tight">
                     Recent Issues
                 </h2>
                 {!isLoading && !isError && (
                     <span
                         aria-live="polite"
-                        className="text-xs text-content-secondary bg-white/5 border border-white/10 px-2.5 py-1 rounded-full font-medium"
+                        className="text-xs text-[var(--text-secondary)] bg-[var(--surface-muted)] border border-[var(--border)] px-2.5 py-1 rounded-[var(--r-sm)] font-medium"
                     >
                         Showing latest {issues.length} {issues.length === 1 ? "issue" : "issues"} (PRs excluded)
                     </span>
@@ -56,10 +56,10 @@ export function IssuesList({ owner, name }: IssuesListProps) {
                     {Array.from({ length: 4 }).map((_, idx) => (
                         <div
                             key={`issue-skeleton-${idx}`}
-                            className="p-4 rounded-xl glass-1 border border-white/10 space-y-2.5"
+                            className="p-4 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)] space-y-2.5"
                         >
                             <div className="flex items-center gap-3">
-                                <Skeleton className="h-5 w-16 rounded-full" />
+                                <Skeleton className="h-5 w-16 rounded-[var(--r-sm)]" />
                                 <Skeleton className="h-4 w-12" />
                                 <Skeleton className="h-4 w-3/4 max-w-md" />
                             </div>

@@ -25,9 +25,8 @@ export function EmptyState({
     if (type === "initial") {
         const repoSuggestions = [
             "react state management",
-            "next.js",
             "language:typescript",
-            "tailwind css",
+            "next.js",
             "machine learning",
         ];
 
@@ -36,7 +35,6 @@ export function EmptyState({
             "gaearon",
             "sindresorhus",
             "antfu",
-            "yyx990803",
         ];
 
         const exampleChips = mode === "users" ? userSuggestions : repoSuggestions;
@@ -44,29 +42,29 @@ export function EmptyState({
         return (
             <div
                 className={cn(
-                    "flex flex-col items-center justify-center p-6 md:p-10 text-center glass-1 rounded-2xl border border-white/10 max-w-2xl mx-auto my-2",
+                    "flex flex-col items-center justify-center p-8 md:p-12 text-center bg-[var(--surface)] border-2 border-dashed border-[var(--border-strong)] rounded-[var(--r-md)] max-w-2xl mx-auto my-4 shadow-[var(--shadow-sm)]",
                     className
                 )}
             >
-                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-accent/15 text-accent mb-3">
-                    <FiSearch className="w-7 h-7" aria-hidden="true" />
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[var(--primary-50)] text-[var(--primary-500)] dark:bg-[var(--primary-500)]/15 dark:text-[var(--link,#6b93ff)] mb-3">
+                    <FiSearch className="w-6 h-6" aria-hidden="true" />
                 </div>
 
-                <h2 className="text-xl md:text-2xl font-bold text-content-primary mb-2">
+                <h2 className="text-xl md:text-2xl font-bold text-[var(--text)] mb-2">
                     {mode === "users"
                         ? "Search GitHub Developers"
                         : "Search GitHub Repositories"}
                 </h2>
 
-                <p className="text-sm md:text-base text-content-secondary mb-5 max-w-md">
+                <p className="text-sm md:text-base text-[var(--text-secondary)] mb-6 max-w-md">
                     {mode === "users"
                         ? "Discover developers, inspect public repositories, follower counts, and locations."
                         : "Explore open-source projects, compare stars and forks, and inspect recent issues."}
                 </p>
 
                 {onSelectQuery && (
-                    <div className="flex flex-col items-center gap-2">
-                        <span className="text-xs uppercase tracking-wider text-content-muted font-semibold">
+                    <div className="flex flex-col items-center gap-2.5">
+                        <span className="text-xs uppercase tracking-wider text-[var(--text-muted)] font-semibold">
                             Try searching for:
                         </span>
                         <div className="flex flex-wrap justify-center gap-2">
@@ -90,20 +88,20 @@ export function EmptyState({
         return (
             <div
                 className={cn(
-                    "flex flex-col items-center justify-center p-8 md:p-12 text-center glass-1 rounded-2xl border border-white/10 max-w-lg mx-auto my-6",
+                    "flex flex-col items-center justify-center p-8 md:p-12 text-center bg-[var(--surface)] border-2 border-dashed border-[var(--border-strong)] rounded-[var(--r-md)] max-w-lg mx-auto my-6 shadow-[var(--shadow-sm)]",
                     className
                 )}
             >
-                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-white/5 text-content-muted mb-4">
-                    <FiSearch className="w-7 h-7" aria-hidden="true" />
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[var(--surface-muted)] text-[var(--text-muted)] mb-4">
+                    <FiSearch className="w-6 h-6" aria-hidden="true" />
                 </div>
 
-                <h2 className="text-lg md:text-xl font-semibold text-content-primary mb-2">
+                <h2 className="text-lg md:text-xl font-semibold text-[var(--text)] mb-2">
                     No {mode === "users" ? "users" : "repositories"} match &ldquo;{query}&rdquo;
                 </h2>
 
-                <p className="text-sm text-content-secondary mb-6">
-                    Try checking for spelling errors, using more general keywords, or clearing advanced filters.
+                <p className="text-sm text-[var(--text-secondary)] mb-6 max-w-sm">
+                    Try checking for spelling errors, using more general keywords, or clearing filters.
                 </p>
 
                 {onClear && (
@@ -119,20 +117,20 @@ export function EmptyState({
         return (
             <div
                 className={cn(
-                    "flex flex-col items-center justify-center p-8 text-center glass-0 rounded-xl border border-white/10 my-4",
+                    "flex flex-col items-center justify-center p-8 text-center bg-[var(--surface)] border border-dashed border-[var(--border-strong)] rounded-[var(--r-md)] my-4 shadow-[var(--shadow-sm)]",
                     className
                 )}
             >
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 text-content-muted mb-3">
-                    <FiInbox className="w-6 h-6" aria-hidden="true" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--surface-muted)] text-[var(--text-muted)] mb-3">
+                    <FiInbox className="w-5 h-5" aria-hidden="true" />
                 </div>
 
-                <h3 className="text-base font-semibold text-content-primary mb-1">
-                    No open or recent issues
+                <h3 className="text-base font-semibold text-[var(--text)] mb-1">
+                    No recent issues. This repository is quiet.
                 </h3>
 
-                <p className="text-sm text-content-secondary">
-                    This repository is quiet with no open or recent issues reported.
+                <p className="text-sm text-[var(--text-secondary)]">
+                    There are no open or recent issues reported on this project.
                 </p>
             </div>
         );
@@ -142,20 +140,20 @@ export function EmptyState({
     return (
         <div
             className={cn(
-                "flex flex-col items-center justify-center p-8 text-center glass-1 rounded-xl border border-white/10 max-w-md mx-auto my-6",
+                "flex flex-col items-center justify-center p-8 text-center bg-[var(--surface)] border border-dashed border-[var(--border-strong)] rounded-[var(--r-md)] max-w-md mx-auto my-6 shadow-[var(--shadow-sm)]",
                 className
             )}
         >
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-badge-warning/15 text-badge-warning mb-3">
-                <FiInfo className="w-6 h-6" aria-hidden="true" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[var(--warning-bg)] text-[var(--warning)] mb-3">
+                <FiInfo className="w-5 h-5" aria-hidden="true" />
             </div>
 
-            <h3 className="text-base font-semibold text-content-primary mb-1">
-                Result limit reached
+            <h3 className="text-base font-semibold text-[var(--text)] mb-1">
+                GitHub only returns the first 1,000 results
             </h3>
 
-            <p className="text-sm text-content-secondary mb-4">
-                GitHub only returns the first 1,000 search results for any query.
+            <p className="text-sm text-[var(--text-secondary)] mb-4">
+                Please narrow down your search query or filters to discover more specific items.
             </p>
 
             {onClear && (

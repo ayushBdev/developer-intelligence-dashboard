@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { FiAlertTriangle, FiWifiOff, FiClock, FiAlertCircle } from "react-icons/fi";
 import { getErrorDetails, ApiError } from "@/api/errors";
 import { cn } from "@/lib/cn";
@@ -20,44 +20,49 @@ export function ErrorState({
     className,
 }: ErrorStateProps) {
     const details = getErrorDetails(error);
+    const headingRef = useRef<HTMLHeadingElement>(null);
 
     const isRateLimit = error instanceof ApiError && error.kind === "rate_limited";
     const isNetwork = error instanceof ApiError && error.kind === "network";
     const isTimeout = error instanceof ApiError && error.kind === "timeout";
 
-    const getIcon = () => {
+    // Focus heading on mount for page variant per DRD 6.4
+    useEffect(() => {
+        if (variant === "page" && headingRef.current) {
+            headingRef.current.focus();
+        }
+    }, [variant]);
+
+    const getIcon = (sizeClasses: string) => {
         if (isNetwork) {
-            return <FiWifiOff className="w-8 h-8 text-badge-danger" aria-hidden="true" />;
+            return <FiWifiOff className={sizeClasses} aria-hidden="true" />;
         }
         if (isRateLimit || isTimeout) {
-            return <FiClock className="w-8 h-8 text-badge-warning" aria-hidden="true" />;
+            return <FiClock className={sizeClasses} aria-hidden="true" />;
         }
-        return <FiAlertCircle className="w-8 h-8 text-badge-danger" aria-hidden="true" />;
+        return <FiAlertCircle className={sizeClasses} aria-hidden="true" />;
     };
 
     if (variant === "inline") {
         return (
             <div
                 role="alert"
+                aria-live="polite"
                 className={cn(
-                    "flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-lg border",
+                    "flex flex-wrap items-center justify-between gap-3 p-4 rounded-[var(--r-sm)] border-l-4 border",
                     isRateLimit
-                        ? "bg-badge-warning/10 border-badge-warning/30 text-content-primary"
-                        : "bg-badge-danger/10 border-badge-danger/30 text-content-primary",
+                        ? "bg-[var(--warning-bg)] border-[var(--warning)]/30 border-l-[var(--warning)] text-[var(--text)]"
+                        : "bg-[var(--danger-bg)] border-[var(--danger)]/30 border-l-[var(--danger)] text-[var(--text)]",
                     className
                 )}
             >
-                <div className="flex items-center gap-2.5 min-w-0">
-                    <FiAlertTriangle
-                        className={cn(
-                            "w-5 h-5 shrink-0",
-                            isRateLimit ? "text-badge-warning" : "text-badge-danger"
-                        )}
-                        aria-hidden="true"
-                    />
-                    <div className="text-sm truncate">
+                <div className="flex items-center gap-3 min-w-0">
+                    <span className={cn("shrink-0", isRateLimit ? "text-[var(--warning)]" : "text-[var(--danger)]")}>
+                        {getIcon("w-5 h-5")}
+                    </span>
+                    <div className="text-sm">
                         <span className="font-semibold">{details.title}: </span>
-                        <span className="text-content-secondary">{details.message}</span>
+                        <span className="text-[var(--text-secondary)]">{details.message}</span>
                     </div>
                 </div>
 
@@ -67,6 +72,7 @@ export function ErrorState({
                         variant={isRateLimit ? "outline" : "danger"}
                         onClick={onRetry}
                         isLoading={isRetrying}
+                        className="text-xs shrink-0"
                     >
                         {details.actionLabel || "Retry"}
                     </Button>
@@ -78,26 +84,35 @@ export function ErrorState({
     return (
         <div
             role="alert"
+            aria-live="assertive"
             className={cn(
-                "flex flex-col items-center justify-center p-8 md:p-12 text-center rounded-2xl border glass-solid",
-                isRateLimit ? "border-badge-warning/40" : "border-badge-danger/40",
+                "flex flex-col items-center justify-center p-8 md:p-12 text-center rounded-[var(--r-lg)] border border-l-4 bg-[var(--surface)] shadow-[var(--shadow-sm)] max-w-xl mx-auto my-6",
+                isRateLimit
+                    ? "border-[var(--warning)]/30 border-l-[var(--warning)]"
+                    : "border-[var(--danger)]/30 border-l-[var(--danger)]",
                 className
             )}
         >
             <div
                 className={cn(
-                    "flex items-center justify-center w-16 h-16 rounded-full mb-4",
-                    isRateLimit ? "bg-badge-warning/15" : "bg-badge-danger/15"
+                    "flex items-center justify-center w-14 h-14 rounded-full mb-4",
+                    isRateLimit
+                        ? "bg-[var(--warning-bg)] text-[var(--warning)]"
+                        : "bg-[var(--danger-bg)] text-[var(--danger)]"
                 )}
             >
-                {getIcon()}
+                {getIcon("w-7 h-7")}
             </div>
 
-            <h2 className="text-xl md:text-2xl font-bold text-content-primary mb-2">
+            <h2
+                ref={headingRef}
+                tabIndex={-1}
+                className="text-xl md:text-2xl font-bold text-[var(--text)] mb-2 focus-visible:outline-none"
+            >
                 {details.title}
             </h2>
 
-            <p className="text-sm md:text-base text-content-secondary max-w-md mb-6 leading-relaxed">
+            <p className="text-sm md:text-base text-[var(--text-secondary)] max-w-md mb-6 leading-relaxed">
                 {details.message}
             </p>
 

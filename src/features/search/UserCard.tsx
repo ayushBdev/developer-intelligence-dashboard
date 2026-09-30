@@ -35,7 +35,7 @@ export function UserCard({ user }: UserCardProps) {
     const publicRepos = enrichedUser?.publicRepos;
 
     return (
-        <article className="group relative flex flex-col justify-between p-5 rounded-2xl glass-1 hover:glass-2 hover:-translate-y-0.5 transition-all duration-150 border border-white/10 shadow-sm">
+        <article className="group relative flex flex-col justify-between p-4 sm:p-5 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)] hover:border-[var(--primary-200)] hover:shadow-[var(--shadow-md)] transition-all duration-150">
             <div>
                 {/* User Header: Avatar, Name, Handle, External link */}
                 <div className="flex items-start justify-between gap-3 mb-3">
@@ -46,17 +46,17 @@ export function UserCard({ user }: UserCardProps) {
                             width={56}
                             height={56}
                             loading="lazy"
-                            className="w-14 h-14 rounded-full border border-white/20 bg-white/5 object-cover shrink-0"
+                            className="w-14 h-14 rounded-full border border-[var(--border)] bg-[var(--surface-muted)] object-cover shrink-0"
                         />
                         <div className="min-w-0">
-                            <h3 className="text-base font-semibold text-content-primary truncate">
+                            <h3 className="text-base font-semibold text-[var(--text)] truncate">
                                 {displayName}
                             </h3>
-                            <p className="text-xs text-content-secondary truncate">
+                            <p className="text-xs text-[var(--text-secondary)] truncate">
                                 @{user.login}
                             </p>
                             {location && (
-                                <p className="flex items-center gap-1 text-xs text-content-muted mt-1 truncate">
+                                <p className="flex items-center gap-1 text-xs text-[var(--text-muted)] mt-1 truncate">
                                     <GoLocation className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                                     <span>{location}</span>
                                 </p>
@@ -75,16 +75,16 @@ export function UserCard({ user }: UserCardProps) {
             </div>
 
             {/* Enriched Stats Area */}
-            <div className="pt-3 mt-2 border-t border-white/10">
+            <div className="pt-3 mt-2 border-t border-[var(--border)]">
                 {isLoading ? (
                     <div className="flex items-center justify-between gap-2 py-1">
-                        <Skeleton className="h-4 w-20" />
-                        <Skeleton className="h-4 w-20" />
-                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-4 w-16" />
+                        <Skeleton className="h-4 w-16" />
+                        <Skeleton className="h-4 w-16" />
                     </div>
                 ) : isError ? (
                     <div className="flex items-center justify-between gap-2 py-1 text-xs">
-                        <span className="text-content-muted italic">Stats unavailable</span>
+                        <span className="text-[var(--text-muted)] italic">Details unavailable</span>
                         <Button
                             size="sm"
                             variant="ghost"
@@ -98,21 +98,21 @@ export function UserCard({ user }: UserCardProps) {
                 ) : (
                     <div className="grid grid-cols-3 gap-2 text-center text-xs">
                         <div className="flex flex-col">
-                            <span className="text-content-muted">Followers</span>
-                            <span className="font-semibold text-content-primary text-sm">
-                                {formatCompactNumber(followers)}
+                            <span className="text-[var(--text-muted)]">Followers</span>
+                            <span className="font-semibold text-[var(--text)] text-sm">
+                                {followers !== undefined ? formatCompactNumber(followers) : "—"}
                             </span>
                         </div>
-                        <div className="flex flex-col border-x border-white/10">
-                            <span className="text-content-muted">Following</span>
-                            <span className="font-semibold text-content-primary text-sm">
-                                {formatCompactNumber(following)}
+                        <div className="flex flex-col border-x border-[var(--border)]">
+                            <span className="text-[var(--text-muted)]">Following</span>
+                            <span className="font-semibold text-[var(--text)] text-sm">
+                                {following !== undefined ? formatCompactNumber(following) : "—"}
                             </span>
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-content-muted">Repos</span>
-                            <span className="font-semibold text-content-primary text-sm">
-                                {formatCompactNumber(publicRepos)}
+                            <span className="text-[var(--text-muted)]">Repos</span>
+                            <span className="font-semibold text-[var(--text)] text-sm">
+                                {publicRepos !== undefined ? formatCompactNumber(publicRepos) : "—"}
                             </span>
                         </div>
                     </div>

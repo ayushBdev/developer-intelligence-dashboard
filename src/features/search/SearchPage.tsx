@@ -81,7 +81,7 @@ export function SearchPage() {
     const totalCount = hasQuery ? activeQuery.data?.totalCount || 0 : 0;
     const pageSize = isRepoMode ? REPOS_PAGE_SIZE : USERS_PAGE_SIZE;
 
-    // Handle Search Queries (always replace in URL to avoid suspense flashes and navigation transitions)
+    // Handle Search Queries
     const handleQueryChange = useCallback(
         (newQuery: string) => {
             setSearchState(
@@ -172,18 +172,18 @@ export function SearchPage() {
     );
 
     return (
-        <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
-            {/* Top Heading */}
-            <div className="text-center max-w-2xl mx-auto space-y-2">
+        <main className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+            {/* Top Heading: 28px/36px (mobile 24px/32px), weight 700 */}
+            <div className="text-center max-w-2xl mx-auto space-y-1.5">
                 <h1
                     id="page-heading"
                     tabIndex={-1}
-                    className="text-3xl sm:text-4xl font-extrabold tracking-tight text-content-primary focus-visible:outline-none"
+                    className="text-2xl sm:text-[28px] leading-8 sm:leading-9 font-bold tracking-tight text-[var(--text)] focus-visible:outline-none"
                 >
                     Developer Intelligence
                 </h1>
-                <p className="text-sm sm:text-base text-content-secondary">
-                    Real-time GitHub exploration with live search, repository insights, and developer metrics.
+                <p className="text-sm sm:text-base text-[var(--text-secondary)]">
+                    Explore GitHub repositories, compare software architecture, and inspect developer profiles.
                 </p>
             </div>
 

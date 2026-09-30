@@ -67,11 +67,11 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
 
     if (isLoading) {
         return (
-            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-                <Skeleton className="h-8 w-36 rounded-lg" />
+            <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+                <Skeleton className="h-8 w-36 rounded-[var(--r-sm)]" />
 
                 {/* Hero Skeleton */}
-                <div className="p-6 md:p-8 rounded-2xl glass-2 border border-white/10 space-y-4">
+                <div className="p-6 md:p-8 rounded-[var(--r-lg)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)] space-y-4">
                     <div className="flex items-center gap-4">
                         <Skeleton className="w-14 h-14 rounded-full" />
                         <div className="space-y-2 flex-1">
@@ -79,17 +79,17 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                             <Skeleton className="h-7 w-64" />
                         </div>
                     </div>
-                    <Skeleton className="h-14 w-full rounded-lg" />
+                    <Skeleton className="h-14 w-full rounded-[var(--r-sm)]" />
                     <div className="flex gap-2">
-                        <Skeleton className="h-6 w-24 rounded-full" />
-                        <Skeleton className="h-6 w-20 rounded-full" />
+                        <Skeleton className="h-6 w-24 rounded-[var(--r-sm)]" />
+                        <Skeleton className="h-6 w-20 rounded-[var(--r-sm)]" />
                     </div>
                 </div>
 
                 {/* Stat Tiles Skeleton */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="p-4 rounded-xl glass-1 border border-white/10 space-y-2">
+                        <div key={i} className="p-4 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)] space-y-2">
                             <Skeleton className="h-3 w-16" />
                             <Skeleton className="h-6 w-20" />
                         </div>
@@ -127,23 +127,23 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
     }
 
     return (
-        <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        <main className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
             {/* Back Navigation */}
             <div>
                 <button
                     type="button"
                     onClick={() => router.back()}
-                    className="inline-flex items-center gap-2 text-sm font-medium text-content-secondary hover:text-content-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg px-2 py-1 -ml-2"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)] rounded-[var(--r-sm)] px-2 py-1 -ml-2"
                 >
                     <GoArrowLeft className="w-4 h-4" aria-hidden="true" />
                     <span>Back to results</span>
                 </button>
             </div>
 
-            {/* Repository Hero (glass-2) */}
+            {/* Repository Hero (flat white panel, radius --r-lg 14px) */}
             <section
                 aria-label="Repository Overview"
-                className="p-6 md:p-8 rounded-2xl glass-2 border border-white/15 shadow-glass space-y-4"
+                className="p-6 md:p-8 rounded-[var(--r-lg)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)] space-y-4"
             >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-4 min-w-0">
@@ -153,16 +153,16 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                             width={56}
                             height={56}
                             loading="lazy"
-                            className="w-14 h-14 rounded-full border border-white/20 bg-white/5 object-cover shrink-0"
+                            className="w-14 h-14 rounded-full border border-[var(--border)] bg-[var(--surface-muted)] object-cover shrink-0"
                         />
                         <div className="min-w-0">
-                            <span className="text-sm font-medium text-content-secondary block">
+                            <span className="text-sm font-medium text-[var(--text-secondary)] block">
                                 {repo.owner.login}
                             </span>
                             <h1
                                 ref={headingRef}
                                 tabIndex={-1}
-                                className="text-2xl sm:text-3xl font-extrabold text-content-primary tracking-tight truncate focus-visible:outline-none"
+                                className="text-2xl sm:text-3xl font-extrabold text-[var(--text)] tracking-tight truncate focus-visible:outline-none"
                             >
                                 {repo.name}
                             </h1>
@@ -177,7 +177,7 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                             onClick={() => toggleFavorite(repo)}
                             leftIcon={
                                 <FiBookmark
-                                    className={`w-4 h-4 ${favorited ? "text-badge-star fill-current" : ""}`}
+                                    className={`w-4 h-4 ${favorited ? "text-[var(--star)] fill-current" : ""}`}
                                 />
                             }
                         >
@@ -194,25 +194,25 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                             <span>{comparing ? "Comparing" : "Compare"}</span>
                         </Button>
 
-                        {/* Open on GitHub */}
+                        {/* Open on GitHub: primary #024ef3 button per DRD 5.5 */}
                         <a
                             href={repo.htmlUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center font-medium rounded-lg text-sm px-4 py-2 min-h-[40px] gap-2 bg-accent hover:bg-accent/90 text-white shadow-md active:translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            className="inline-flex items-center justify-center font-medium rounded-[var(--r-sm)] text-sm px-4 py-2 min-h-[40px] gap-2 bg-[var(--primary-500)] hover:bg-[var(--primary-600)] active:bg-[var(--primary-700)] text-white shadow-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]"
                         >
-                            <span>Open on GitHub</span>
+                            <span>View on GitHub</span>
                             <GoLinkExternal className="w-4 h-4" aria-hidden="true" />
                         </a>
                     </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm sm:text-base text-content-secondary leading-relaxed max-w-4xl break-words">
+                <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-4xl break-words">
                     {repo.description ? (
                         repo.description
                     ) : (
-                        <span className="italic text-content-muted">No description provided</span>
+                        <span className="italic text-[var(--text-muted)]">No description provided</span>
                     )}
                 </p>
 
@@ -237,36 +237,36 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                     <Chip
                         variant="outline"
                         size="sm"
-                        icon={<GoGitBranch className="w-3.5 h-3.5 text-content-muted" aria-hidden="true" />}
+                        icon={<GoGitBranch className="w-3.5 h-3.5 text-[var(--text-muted)]" aria-hidden="true" />}
                     >
                         <span className="font-mono text-xs">{repo.defaultBranch}</span>
                     </Chip>
                 </div>
             </section>
 
-            {/* Stats Grid (glass-1 tiles) */}
+            {/* Stats Grid: 2 cols mobile, 3 tablet, 6 desktop */}
             <section aria-label="Repository Statistics">
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                     <StatTile
                         label="Stars"
                         value={formatCompactNumber(repo.stars)}
-                        icon={<GoStar className="w-4 h-4 text-badge-star" aria-hidden="true" />}
+                        icon={<GoStar className="w-4 h-4 text-[var(--star)]" aria-hidden="true" />}
                     />
                     <StatTile
                         label="Forks"
                         value={formatCompactNumber(repo.forks)}
-                        icon={<GoRepoForked className="w-4 h-4 text-accent" aria-hidden="true" />}
+                        icon={<GoRepoForked className="w-4 h-4 text-[var(--text-muted)]" aria-hidden="true" />}
                     />
                     <StatTile
                         label="Watchers"
                         value={formatCompactNumber(repo.watchers)}
-                        icon={<GoEye className="w-4 h-4 text-accent-2" aria-hidden="true" />}
+                        icon={<GoEye className="w-4 h-4 text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)]" aria-hidden="true" />}
                     />
                     <StatTile
                         label="Open Issues"
                         value={formatCompactNumber(repo.openIssues)}
-                        subtitle="Includes pull requests"
-                        icon={<GoIssueOpened className="w-4 h-4 text-badge-success" aria-hidden="true" />}
+                        subtitle="includes pull requests"
+                        icon={<GoIssueOpened className="w-4 h-4 text-[var(--success)]" aria-hidden="true" />}
                     />
                     <StatTile
                         label="Created"

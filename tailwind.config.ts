@@ -11,34 +11,53 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
+                brand: {
+                    50: "var(--primary-50)",
+                    100: "var(--primary-100)",
+                    200: "var(--primary-200)",
+                    500: "var(--primary-500)",
+                    600: "var(--primary-600)",
+                    700: "var(--primary-700)",
+                },
                 canvas: {
-                    base: "var(--bg-base)",
-                    solid: "var(--surface-solid)",
+                    base: "var(--bg)",
+                    solid: "var(--surface)",
+                },
+                surface: {
+                    DEFAULT: "var(--surface)",
+                    muted: "var(--surface-muted)",
+                },
+                border: {
+                    DEFAULT: "var(--border)",
+                    strong: "var(--border-strong)",
                 },
                 content: {
-                    primary: "var(--text-primary)",
+                    primary: "var(--text)",
                     secondary: "var(--text-secondary)",
                     muted: "var(--text-muted)",
                 },
                 accent: {
                     DEFAULT: "var(--accent)",
                     secondary: "var(--accent-2)",
+                    link: "var(--link, #024ef3)",
                 },
                 badge: {
                     star: "var(--star)",
                     success: "var(--success)",
                     danger: "var(--danger)",
                     warning: "var(--warning)",
-                    merged: "var(--merged)",
+                    merged: "var(--closed)",
                 },
             },
             borderRadius: {
-                sm: "var(--r-sm, 8px)",
-                md: "var(--r-md, 14px)",
-                lg: "var(--r-lg, 20px)",
+                sm: "var(--r-sm, 6px)",
+                md: "var(--r-md, 10px)",
+                lg: "var(--r-lg, 14px)",
             },
             boxShadow: {
-                glass: "var(--glass-shadow)",
+                sm: "var(--shadow-sm)",
+                md: "var(--shadow-md)",
+                glass: "var(--shadow-sm)",
             },
             keyframes: {
                 shimmer: {
@@ -47,7 +66,7 @@ const config: Config = {
                 },
             },
             animation: {
-                shimmer: "shimmer 1.8s ease-in-out infinite",
+                shimmer: "shimmer 1.6s ease-in-out infinite",
             },
         },
     },

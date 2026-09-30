@@ -26,13 +26,13 @@ export function Chip({
 
     const variantClasses = {
         default:
-            "bg-white/10 text-content-primary border border-white/15",
+            "bg-[var(--surface-muted)] text-[var(--text)] border border-[var(--border)]",
         accent:
-            "bg-accent/20 text-accent border border-accent/30 font-medium",
+            "bg-[var(--primary-50)] dark:bg-[var(--primary-500)]/15 text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)] border border-[var(--primary-200)] dark:border-[var(--primary-500)]/30 font-medium",
         outline:
-            "border border-white/20 text-content-secondary",
+            "border border-[var(--border)] text-[var(--text-secondary)] bg-[var(--surface)]",
         interactive:
-            "bg-white/10 hover:bg-white/20 text-content-primary border border-white/20 cursor-pointer active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+            "bg-[var(--primary-50)] dark:bg-[var(--surface-muted)] text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)] border border-[var(--primary-200)] dark:border-[var(--border)] hover:bg-[var(--primary-100)] dark:hover:bg-[var(--primary-500)]/20 cursor-pointer active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]",
     }[variant];
 
     return (
@@ -51,7 +51,7 @@ export function Chip({
                     : undefined
             }
             className={cn(
-                "inline-flex items-center rounded-full font-medium transition-colors select-none",
+                "inline-flex items-center rounded-[var(--r-sm)] font-medium transition-colors select-none",
                 sizeClasses,
                 variantClasses,
                 className

@@ -44,10 +44,10 @@ export function FilterBar({
     const hasActiveFilters = Boolean(language || (minStars !== undefined && minStars > 0));
 
     return (
-        <div className="flex flex-wrap items-center gap-3 pt-2 pb-1 text-sm">
-            <div className="flex items-center gap-1.5 text-content-muted shrink-0">
+        <div className="flex flex-wrap items-center gap-3 pt-2 text-sm">
+            <div className="flex items-center gap-1.5 text-[var(--text-muted)] shrink-0">
                 <FiFilter className="w-4 h-4" aria-hidden="true" />
-                <span className="font-medium text-xs uppercase tracking-wider">Filters:</span>
+                <span className="font-semibold text-xs uppercase tracking-wider">Filters:</span>
             </div>
 
             {/* Language Select */}
@@ -57,22 +57,22 @@ export function FilterBar({
                     value={language || ""}
                     disabled={disabled}
                     onChange={(e) => onLanguageChange(e.target.value || undefined)}
-                    className="appearance-none bg-white/10 hover:bg-white/15 text-content-primary border border-white/15 rounded-lg px-3 py-1.5 pr-8 text-xs font-medium backdrop-blur-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50"
+                    className="appearance-none bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text)] border border-[var(--border-strong)] rounded-[var(--r-sm)] px-3 py-1.5 pr-8 text-xs font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)] disabled:opacity-50"
                 >
-                    <option value="" className="bg-[#151b30] text-content-primary">
+                    <option value="" className="bg-[var(--surface)] text-[var(--text)]">
                         All Languages
                     </option>
                     {COMMON_LANGUAGES.map((lang) => (
                         <option
                             key={lang}
                             value={lang.toLowerCase()}
-                            className="bg-[#151b30] text-content-primary"
+                            className="bg-[var(--surface)] text-[var(--text)]"
                         >
                             {lang}
                         </option>
                     ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-content-secondary text-xs">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[var(--text-secondary)] text-xs">
                     ▼
                 </div>
             </div>
@@ -87,19 +87,19 @@ export function FilterBar({
                         const val = parseInt(e.target.value, 10);
                         onMinStarsChange(val > 0 ? val : undefined);
                     }}
-                    className="appearance-none bg-white/10 hover:bg-white/15 text-content-primary border border-white/15 rounded-lg px-3 py-1.5 pr-8 text-xs font-medium backdrop-blur-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50"
+                    className="appearance-none bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text)] border border-[var(--border-strong)] rounded-[var(--r-sm)] px-3 py-1.5 pr-8 text-xs font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)] disabled:opacity-50"
                 >
                     {STAR_OPTIONS.map((opt) => (
                         <option
                             key={opt.value}
                             value={opt.value}
-                            className="bg-[#151b30] text-content-primary"
+                            className="bg-[var(--surface)] text-[var(--text)]"
                         >
                             {opt.label}
                         </option>
                     ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-content-secondary text-xs">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[var(--text-secondary)] text-xs">
                     ▼
                 </div>
             </div>
@@ -111,7 +111,7 @@ export function FilterBar({
                     onClick={onClearAll}
                     disabled={disabled}
                     className={cn(
-                        "inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-accent hover:text-accent/80 bg-accent/10 hover:bg-accent/20 border border-accent/25 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        "inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)] bg-[var(--primary-50)] dark:bg-[var(--primary-500)]/15 hover:bg-[var(--primary-100)] border border-[var(--primary-200)] dark:border-[var(--primary-500)]/30 rounded-[var(--r-sm)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]"
                     )}
                 >
                     <FiX className="w-3.5 h-3.5" aria-hidden="true" />

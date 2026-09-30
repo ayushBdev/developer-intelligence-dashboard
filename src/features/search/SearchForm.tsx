@@ -36,7 +36,7 @@ export function SearchForm({
     const inputRef = useRef<HTMLInputElement>(null);
     const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Sync input when initialQuery changes externally (e.g. suggestions clicked, clear clicked, or back/forward)
+    // Sync input when initialQuery changes externally
     useEffect(() => {
         setInputValue(initialQuery);
         if (debounceTimerRef.current) {
@@ -69,7 +69,7 @@ export function SearchForm({
         };
     }, []);
 
-    // Handle typing with clean debounce timer
+    // Handle typing with debounce timer
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
         setInputValue(val);
@@ -115,7 +115,7 @@ export function SearchForm({
         <form
             role="search"
             onSubmit={handleSubmit}
-            className="w-full glass-2 p-4 md:p-6 rounded-2xl border border-white/15 shadow-glass flex flex-col gap-4"
+            className="w-full bg-[var(--surface)] p-4 md:p-6 rounded-[var(--r-md)] border border-[var(--border)] shadow-[var(--shadow-sm)] flex flex-col gap-4"
         >
             <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
                 {/* Search Input Box */}
@@ -124,7 +124,7 @@ export function SearchForm({
                         Search GitHub repositories and users
                     </label>
 
-                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-content-muted">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--text-muted)]">
                         <FiSearch className="w-5 h-5" aria-hidden="true" />
                     </div>
 
@@ -142,13 +142,13 @@ export function SearchForm({
                         maxLength={256}
                         autoComplete="off"
                         spellCheck={false}
-                        className="w-full pl-11 pr-24 py-3 rounded-xl bg-white/5 border border-white/15 text-content-primary placeholder-content-muted text-sm md:text-base backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+                        className="w-full h-[44px] pl-11 pr-24 rounded-[var(--r-sm)] bg-[var(--surface)] dark:bg-[var(--surface-muted)] border border-[var(--border-strong)] text-[var(--text)] placeholder-[var(--text-muted)] text-sm md:text-base transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)] focus-visible:border-[var(--primary-500)]"
                     />
 
                     {/* Right side indicators: Shortcut hint + Clear button + Fetching spinner */}
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
                         {isFetching && (
-                            <span className="text-accent flex items-center" title="Searching...">
+                            <span className="text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)] flex items-center" title="Searching...">
                                 <Spinner size="sm" />
                             </span>
                         )}
@@ -156,7 +156,7 @@ export function SearchForm({
                         {!inputValue && (
                             <kbd
                                 title="Press / to focus search"
-                                className="hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-content-muted bg-white/5 border border-white/10 rounded shadow-sm"
+                                className="hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-[var(--text-muted)] bg-[var(--surface-muted)] border border-[var(--border)] rounded-[4px] shadow-sm"
                             >
                                 /
                             </kbd>
@@ -167,7 +167,7 @@ export function SearchForm({
                                 type="button"
                                 onClick={handleClear}
                                 aria-label="Clear search input"
-                                className="p-1 rounded-md text-content-secondary hover:text-content-primary hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                className="p-1 rounded-[var(--r-sm)] text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]"
                             >
                                 <FiX className="w-4 h-4" aria-hidden="true" />
                             </button>

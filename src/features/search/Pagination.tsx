@@ -75,10 +75,10 @@ export function Pagination({
                 aria-disabled={!hasPrev || disabled}
                 onClick={() => handleSelectPage(currentPage - 1)}
                 className={cn(
-                    "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg border border-white/10 glass-1 text-content-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                    "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-[var(--r-sm)] border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]",
                     !hasPrev || disabled
-                        ? "opacity-40 cursor-not-allowed pointer-events-none"
-                        : "hover:glass-2 hover:border-white/20 active:scale-95"
+                        ? "opacity-50 cursor-not-allowed pointer-events-none"
+                        : "hover:bg-[var(--surface-muted)] hover:border-[var(--border-strong)] active:scale-95"
                 )}
             >
                 <FiChevronLeft className="w-4 h-4" aria-hidden="true" />
@@ -86,7 +86,7 @@ export function Pagination({
             </button>
 
             {/* Mobile View: "Page X of Y" */}
-            <div className="flex sm:hidden items-center px-3 py-1.5 text-xs text-content-secondary font-medium">
+            <div className="flex sm:hidden items-center px-3 py-1.5 text-xs text-[var(--text-secondary)] font-medium">
                 Page {currentPage} of {totalPages}
             </div>
 
@@ -97,7 +97,7 @@ export function Pagination({
                         return (
                             <span
                                 key={`ellipsis-${idx}`}
-                                className="px-2 py-1 text-content-muted text-sm"
+                                className="px-2 py-1 text-[var(--text-muted)] text-sm"
                                 aria-hidden="true"
                             >
                                 …
@@ -116,10 +116,10 @@ export function Pagination({
                             aria-current={isCurrent ? "page" : undefined}
                             onClick={() => handleSelectPage(pageNumber)}
                             className={cn(
-                                "min-w-[38px] h-[38px] px-2.5 rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                                "min-w-[38px] h-[38px] px-2.5 rounded-[var(--r-sm)] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]",
                                 isCurrent
-                                    ? "bg-accent text-white font-semibold shadow-md pointer-events-none"
-                                    : "border border-white/10 glass-1 text-content-secondary hover:text-content-primary hover:glass-2 hover:border-white/20 active:scale-95"
+                                    ? "bg-[var(--primary-500)] text-white font-semibold shadow-sm pointer-events-none"
+                                    : "border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--surface-muted)] hover:border-[var(--border-strong)] active:scale-95"
                             )}
                         >
                             {pageNumber}
@@ -135,10 +135,10 @@ export function Pagination({
                 aria-disabled={!hasNext || disabled}
                 onClick={() => handleSelectPage(currentPage + 1)}
                 className={cn(
-                    "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg border border-white/10 glass-1 text-content-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                    "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-[var(--r-sm)] border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)]",
                     !hasNext || disabled
-                        ? "opacity-40 cursor-not-allowed pointer-events-none"
-                        : "hover:glass-2 hover:border-white/20 active:scale-95"
+                        ? "opacity-50 cursor-not-allowed pointer-events-none"
+                        : "hover:bg-[var(--surface-muted)] hover:border-[var(--border-strong)] active:scale-95"
                 )}
             >
                 <span className="hidden sm:inline">Next</span>

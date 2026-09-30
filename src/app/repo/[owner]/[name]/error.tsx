@@ -21,7 +21,7 @@ export default function RepoError({
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <Link
                 href="/"
-                className="inline-flex items-center gap-2 text-sm font-medium text-content-secondary hover:text-content-primary mb-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg px-2 py-1 -ml-2"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text)] mb-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-500)] rounded-[var(--r-sm)] px-2 py-1 -ml-2"
             >
                 <GoArrowLeft className="w-4 h-4" aria-hidden="true" />
                 <span>Back to search</span>

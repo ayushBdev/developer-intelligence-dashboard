@@ -13,10 +13,10 @@ export function IssueStateBadge({ state, className }: IssueStateBadgeProps) {
     return (
         <span
             className={cn(
-                "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold shrink-0 border",
+                "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[var(--r-sm)] text-xs font-semibold shrink-0 border",
                 isOpen
-                    ? "bg-badge-success/15 text-badge-success border-badge-success/30"
-                    : "bg-badge-merged/15 text-badge-merged border-badge-merged/30",
+                    ? "bg-[var(--success-bg)] text-[var(--success)] border-[var(--success)]/25"
+                    : "bg-[var(--closed-bg)] text-[var(--closed)] border-[var(--closed)]/25",
                 className
             )}
         >

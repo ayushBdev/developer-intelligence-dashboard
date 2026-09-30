@@ -27,9 +27,9 @@ export function RepoLanguages({ owner, name }: RepoLanguagesProps) {
     }
 
     return (
-        <section aria-label="Languages breakdown" className="flex flex-col gap-3 p-5 rounded-2xl glass-1 border border-white/10">
-            <div className="flex items-center gap-2 text-content-primary font-semibold text-sm">
-                <FiCode className="w-4 h-4 text-accent-2" aria-hidden="true" />
+        <section aria-label="Languages breakdown" className="flex flex-col gap-3 p-5 rounded-[var(--r-md)] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-sm)]">
+            <div className="flex items-center gap-2 text-[var(--text)] font-semibold text-sm">
+                <FiCode className="w-4 h-4 text-[var(--primary-500)] dark:text-[var(--link,#6b93ff)]" aria-hidden="true" />
                 <span>Languages</span>
             </div>
 
@@ -44,7 +44,7 @@ export function RepoLanguages({ owner, name }: RepoLanguagesProps) {
             ) : (
                 <div className="space-y-3">
                     {/* Multi-segmented percentage bar */}
-                    <div className="h-2.5 w-full rounded-full flex overflow-hidden bg-white/5 border border-white/10">
+                    <div className="h-2.5 w-full rounded-full flex overflow-hidden bg-[var(--surface-muted)] border border-[var(--border)]">
                         {languages.map((lang) => (
                             <div
                                 key={lang.name}
@@ -67,8 +67,8 @@ export function RepoLanguages({ owner, name }: RepoLanguagesProps) {
                                     style={{ backgroundColor: lang.color }}
                                     aria-hidden="true"
                                 />
-                                <span className="font-medium text-content-primary">{lang.name}</span>
-                                <span className="text-content-muted">{lang.percentage}%</span>
+                                <span className="font-medium text-[var(--text)]">{lang.name}</span>
+                                <span className="text-[var(--text-muted)]">{lang.percentage}%</span>
                             </div>
                         ))}
                     </div>
