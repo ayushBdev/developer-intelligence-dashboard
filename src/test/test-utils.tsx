@@ -2,6 +2,8 @@ import React from "react";
 import { render, type RenderOptions } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/providers/ThemeContext";
+import { FavoritesProvider } from "@/providers/FavoritesContext";
+import { CompareProvider } from "@/providers/CompareContext";
 
 export function createTestQueryClient() {
     return new QueryClient({
@@ -23,7 +25,11 @@ export function renderWithProviders(
     function Wrapper({ children }: { children: React.ReactNode }) {
         return (
             <QueryClientProvider client={testQueryClient}>
-                <ThemeProvider>{children}</ThemeProvider>
+                <ThemeProvider>
+                    <FavoritesProvider>
+                        <CompareProvider>{children}</CompareProvider>
+                    </FavoritesProvider>
+                </ThemeProvider>
             </QueryClientProvider>
         );
     }
@@ -33,4 +39,3 @@ export function renderWithProviders(
         queryClient: testQueryClient,
     };
 }
-

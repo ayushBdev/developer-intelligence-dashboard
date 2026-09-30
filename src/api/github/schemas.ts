@@ -73,9 +73,22 @@ export const rawIssueSchema = z.object({
 
 export const rawIssuesResponseSchema = z.array(rawIssueSchema);
 
+export const rawContributorSchema = z.object({
+    id: z.number(),
+    login: z.string(),
+    avatar_url: z.string(),
+    html_url: z.string(),
+    contributions: z.number().default(0),
+});
+
+export const rawContributorsResponseSchema = z.array(rawContributorSchema);
+
+export const rawLanguagesSchema = z.record(z.string(), z.number());
+
 export type RawRepo = z.infer<typeof rawRepoSchema>;
 export type RawRepoDetail = z.infer<typeof rawRepoDetailSchema>;
 export type RawSearchUser = z.infer<typeof rawSearchUserSchema>;
 export type RawUserDetail = z.infer<typeof rawUserDetailSchema>;
 export type RawIssue = z.infer<typeof rawIssueSchema>;
+export type RawContributor = z.infer<typeof rawContributorSchema>;
 

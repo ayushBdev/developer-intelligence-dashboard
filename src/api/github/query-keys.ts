@@ -9,5 +9,8 @@ export const qk = {
         ["repo", owner, name] as const,
     issues: (owner: string, name: string) =>
         ["issues", owner, name] as const,
+    contributors: (owner: string, name: string) =>
+        ["contributors", owner, name] as const,
+    languages: (owner: string, name: string) =>
+        ["languages", owner, name] as const,
 };
-

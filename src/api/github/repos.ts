@@ -1,11 +1,20 @@
 import { github } from "../client";
 import { ApiError } from "../errors";
 import {
+    rawContributorsResponseSchema,
+    rawLanguagesSchema,
     rawRepoDetailSchema,
     rawRepoSchema,
     searchResponseSchema,
 } from "./schemas";
-import type { RepoDetail, RepoItem, SearchResult } from "@/types";
+import { getLanguageColor } from "@/lib/format";
+import type {
+    ContributorItem,
+    LanguageBreakdown,
+    RepoDetail,
+    RepoItem,
+    SearchResult,
+} from "@/types";
 
 export interface SearchReposParams {
     q: string;
@@ -132,3 +141,63 @@ export async function getRepo(
     };
 }
 
+export async function getRepoContributors(
+    owner: string,
+    name: string,
+    perPage: number = 6,
+    signal?: AbortSignal
+): Promise<ContributorItem[]> {
+    const response = await github.get(
+        `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/contributors`,
+        {
+            params: { per_page: perPage },
+            signal,
+        }
+    );
+
+    const parsed = rawContributorsResponseSchema.safeParse(response.data);
+    if (!parsed.success) {
+        throw new ApiError("invalid_response", "Failed to parse repository contributors response.", {
+            cause: parsed.error,
+        });
+    }
+
+    return parsed.data.map((c) => ({
+        id: c.id,
+        login: c.login,
+        avatarUrl: c.avatar_url,
+        htmlUrl: c.html_url,
+        contributions: c.contributions,
+    }));
+}
+
+export async function getRepoLanguages(
+    owner: string,
+    name: string,
+    signal?: AbortSignal
+): Promise<LanguageBreakdown[]> {
+    const response = await github.get(
+        `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(name)}/languages`,
+        { signal }
+    );
+
+    const parsed = rawLanguagesSchema.safeParse(response.data);
+    if (!parsed.success) {
+        throw new ApiError("invalid_response", "Failed to parse repository languages response.", {
+            cause: parsed.error,
+        });
+    }
+
+    const data = parsed.data;
+    const totalBytes = Object.values(data).reduce((acc, bytes) => acc + bytes, 0);
+    if (totalBytes === 0) {
+        return [];
+    }
+
+    return Object.entries(data).map(([langName, bytes]) => ({
+        name: langName,
+        bytes,
+        percentage: Math.round((bytes / totalBytes) * 1000) / 10,
+        color: getLanguageColor(langName),
+    }));
+}

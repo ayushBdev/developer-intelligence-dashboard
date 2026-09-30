@@ -4,6 +4,10 @@ import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiError } from "@/api/errors";
 import { ThemeProvider } from "./ThemeContext";
+import { FavoritesProvider } from "./FavoritesContext";
+import { CompareProvider } from "./CompareContext";
+import { CompareModal } from "@/features/compare/CompareModal";
+import { CompareFloatingBar } from "@/features/compare/CompareFloatingBar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(
@@ -34,8 +38,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+                <FavoritesProvider>
+                    <CompareProvider>
+                        {children}
+                        <CompareFloatingBar />
+                        <CompareModal />
+                    </CompareProvider>
+                </FavoritesProvider>
+            </ThemeProvider>
         </QueryClientProvider>
     );
 }
-

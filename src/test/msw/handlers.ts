@@ -187,5 +187,34 @@ export const handlers = [
             },
         ]);
     }),
+
+    // Repo Contributors (Additional Public API)
+    http.get("https://api.github.com/repos/:owner/:name/contributors", () => {
+        return HttpResponse.json([
+            {
+                id: 1,
+                login: "gaearon",
+                avatar_url: "https://avatars.githubusercontent.com/u/810438",
+                html_url: "https://github.com/gaearon",
+                contributions: 1820,
+            },
+            {
+                id: 2,
+                login: "sophiebits",
+                avatar_url: "https://avatars.githubusercontent.com/u/6820",
+                html_url: "https://github.com/sophiebits",
+                contributions: 1450,
+            },
+        ]);
+    }),
+
+    // Repo Languages (Additional Public API)
+    http.get("https://api.github.com/repos/:owner/:name/languages", () => {
+        return HttpResponse.json({
+            JavaScript: 750000,
+            TypeScript: 250000,
+        });
+    }),
 ];
+
 

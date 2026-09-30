@@ -33,6 +33,7 @@ export function SearchForm({
     onClearAllFilters,
 }: SearchFormProps) {
     const [inputValue, setInputValue] = useState(initialQuery);
+    const inputRef = useRef<HTMLInputElement>(null);
     const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     // Sync input when initialQuery changes externally (e.g. suggestions clicked, clear clicked, or back/forward)
@@ -43,6 +44,30 @@ export function SearchForm({
             debounceTimerRef.current = null;
         }
     }, [initialQuery]);
+
+    // Keyboard shortcut navigation: '/' to focus search, 'Escape' to blur/clear
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const activeElem = document.activeElement;
+            const isTyping =
+                activeElem &&
+                (activeElem.tagName === "INPUT" ||
+                    activeElem.tagName === "TEXTAREA" ||
+                    activeElem.getAttribute("contenteditable") === "true");
+
+            if (e.key === "/" && !isTyping) {
+                e.preventDefault();
+                inputRef.current?.focus();
+            } else if (e.key === "Escape" && activeElem === inputRef.current) {
+                inputRef.current?.blur();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
 
     // Handle typing with clean debounce timer
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,6 +108,7 @@ export function SearchForm({
         }
         setInputValue("");
         onQueryChange("", true);
+        inputRef.current?.focus();
     };
 
     return (
@@ -103,6 +129,7 @@ export function SearchForm({
                     </div>
 
                     <input
+                        ref={inputRef}
                         id="search-input"
                         type="text"
                         value={inputValue}
@@ -115,15 +142,24 @@ export function SearchForm({
                         maxLength={256}
                         autoComplete="off"
                         spellCheck={false}
-                        className="w-full pl-11 pr-20 py-3 rounded-xl bg-white/5 border border-white/15 text-content-primary placeholder-content-muted text-sm md:text-base backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
+                        className="w-full pl-11 pr-24 py-3 rounded-xl bg-white/5 border border-white/15 text-content-primary placeholder-content-muted text-sm md:text-base backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
                     />
 
-                    {/* Right side indicators: Clear button + Fetching spinner */}
+                    {/* Right side indicators: Shortcut hint + Clear button + Fetching spinner */}
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
                         {isFetching && (
                             <span className="text-accent flex items-center" title="Searching...">
                                 <Spinner size="sm" />
                             </span>
+                        )}
+
+                        {!inputValue && (
+                            <kbd
+                                title="Press / to focus search"
+                                className="hidden sm:inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono font-semibold text-content-muted bg-white/5 border border-white/10 rounded shadow-sm"
+                            >
+                                /
+                            </kbd>
                         )}
 
                         {inputValue && (
@@ -158,4 +194,3 @@ export function SearchForm({
         </form>
     );
 }
-

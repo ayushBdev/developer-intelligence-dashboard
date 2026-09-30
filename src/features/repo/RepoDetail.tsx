@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -13,14 +12,19 @@ import {
     GoLinkExternal,
     GoGitBranch,
 } from "react-icons/go";
+import { FiBookmark, FiPlus, FiCheck } from "react-icons/fi";
 import { getRepo } from "@/api/github/repos";
 import { qk } from "@/api/github/query-keys";
 import { StatTile } from "./StatTile";
 import { IssuesList } from "./IssuesList";
+import { RepoContributors } from "./RepoContributors";
+import { RepoLanguages } from "./RepoLanguages";
 import { Button } from "@/components/Button";
 import { Chip } from "@/components/Chip";
 import { Skeleton } from "@/components/Skeleton";
 import { ErrorState } from "@/components/ErrorState";
+import { useFavorites } from "@/providers/FavoritesContext";
+import { useCompare } from "@/providers/CompareContext";
 import {
     formatCompactNumber,
     formatAbsoluteDate,
@@ -36,6 +40,8 @@ export interface RepoDetailProps {
 export function RepoDetail({ owner, name }: RepoDetailProps) {
     const router = useRouter();
     const headingRef = useRef<HTMLHeadingElement>(null);
+    const { isFavorite, toggleFavorite } = useFavorites();
+    const { isInCompare, addToCompare } = useCompare();
 
     const {
         data: repo,
@@ -48,6 +54,9 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
         queryKey: qk.repo(owner, name),
         queryFn: ({ signal }) => getRepo(owner, name, signal),
     });
+
+    const favorited = repo ? isFavorite(repo.fullName) : false;
+    const comparing = repo ? isInCompare(repo.id) : false;
 
     // Move focus to page h1 on mount/route change for accessibility (DRD 7 / PRD F8)
     useEffect(() => {
@@ -160,7 +169,32 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3 shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0 flex-wrap">
+                        {/* Favorite button */}
+                        <Button
+                            variant="secondary"
+                            size="md"
+                            onClick={() => toggleFavorite(repo)}
+                            leftIcon={
+                                <FiBookmark
+                                    className={`w-4 h-4 ${favorited ? "text-badge-star fill-current" : ""}`}
+                                />
+                            }
+                        >
+                            <span>{favorited ? "Favorited" : "Favorite"}</span>
+                        </Button>
+
+                        {/* Compare button */}
+                        <Button
+                            variant={comparing ? "primary" : "secondary"}
+                            size="md"
+                            onClick={() => addToCompare(repo)}
+                            leftIcon={comparing ? <FiCheck className="w-4 h-4" /> : <FiPlus className="w-4 h-4" />}
+                        >
+                            <span>{comparing ? "Comparing" : "Compare"}</span>
+                        </Button>
+
+                        {/* Open on GitHub */}
                         <a
                             href={repo.htmlUrl}
                             target="_blank"
@@ -247,9 +281,14 @@ export function RepoDetail({ owner, name }: RepoDetailProps) {
                 </div>
             </section>
 
+            {/* Additional Public API Enhancements: Languages Breakdown & Top Contributors */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <RepoLanguages owner={owner} name={name} />
+                <RepoContributors owner={owner} name={name} />
+            </div>
+
             {/* Recent Issues List Section */}
             <IssuesList owner={owner} name={name} />
         </main>
     );
 }
-

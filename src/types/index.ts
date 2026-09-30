@@ -48,6 +48,21 @@ export interface IssueItem {
     authorAvatarUrl?: string;
 }
 
+export interface ContributorItem {
+    id: number;
+    login: string;
+    avatarUrl: string;
+    htmlUrl: string;
+    contributions: number;
+}
+
+export interface LanguageBreakdown {
+    name: string;
+    bytes: number;
+    percentage: number;
+    color: string;
+}
+
 export interface SearchResult<T> {
     totalCount: number;
     incompleteResults: boolean;
@@ -61,4 +76,3 @@ export interface SearchParamsState {
     language?: string;
     minStars?: number;
 }
-
