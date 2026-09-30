@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import type { SearchMode, SearchParamsState } from "@/types";
 
@@ -18,7 +18,7 @@ export function useSearchState() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const state: SearchParamsState = useMemo(() => {
+    const parsedFromUrl: SearchParamsState = useMemo(() => {
         const rawParams: Record<string, string> = {};
         searchParams.forEach((value, key) => {
             rawParams[key] = value;
@@ -35,45 +35,58 @@ export function useSearchState() {
         };
     }, [searchParams]);
 
+    // Local synchronous state so state updates take effect immediately without waiting for router roundtrip
+    const [state, setState] = useState<SearchParamsState>(parsedFromUrl);
+
+    // Keep synced when browser back/forward or external URL changes occur
+    useEffect(() => {
+        setState(parsedFromUrl);
+    }, [parsedFromUrl]);
+
     const setSearchState = useCallback(
         (
             updates: Partial<SearchParamsState>,
             options?: { replace?: boolean }
         ) => {
-            const nextState = { ...state, ...updates };
+            setState((prev) => {
+                const nextState = { ...prev, ...updates };
 
-            const params = new URLSearchParams();
+                const params = new URLSearchParams();
 
-            if (nextState.q.trim()) {
-                params.set("q", nextState.q.trim());
-            }
+                if (nextState.q.trim()) {
+                    params.set("q", nextState.q.trim());
+                }
 
-            if (nextState.type && nextState.type !== "repos") {
-                params.set("type", nextState.type);
-            }
+                if (nextState.type && nextState.type !== "repos") {
+                    params.set("type", nextState.type);
+                }
 
-            if (nextState.page && nextState.page > 1) {
-                params.set("page", nextState.page.toString());
-            }
+                if (nextState.page && nextState.page > 1) {
+                    params.set("page", nextState.page.toString());
+                }
 
-            if (nextState.language && nextState.language.trim()) {
-                params.set("language", nextState.language.trim());
-            }
+                if (nextState.language && nextState.language.trim()) {
+                    params.set("language", nextState.language.trim());
+                }
 
-            if (nextState.minStars !== undefined && nextState.minStars > 0) {
-                params.set("minStars", nextState.minStars.toString());
-            }
+                if (nextState.minStars !== undefined && nextState.minStars > 0) {
+                    params.set("minStars", nextState.minStars.toString());
+                }
 
-            const queryString = params.toString();
-            const targetUrl = queryString ? `${pathname}?${queryString}` : pathname;
+                const queryString = params.toString();
+                const targetUrl = queryString ? `${pathname}?${queryString}` : pathname;
 
-            if (options?.replace) {
-                router.replace(targetUrl, { scroll: false });
-            } else {
-                router.push(targetUrl, { scroll: false });
-            }
+                // Always use replace with scroll: false to avoid triggering Suspense fallback re-renders and flicker
+                if (options?.replace !== false) {
+                    router.replace(targetUrl, { scroll: false });
+                } else {
+                    router.push(targetUrl, { scroll: false });
+                }
+
+                return nextState;
+            });
         },
-        [pathname, router, state]
+        [pathname, router]
     );
 
     return {

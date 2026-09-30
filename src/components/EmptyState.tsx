@@ -3,9 +3,11 @@ import { FiSearch, FiInbox, FiInfo } from "react-icons/fi";
 import { cn } from "@/lib/cn";
 import { Button } from "./Button";
 import { Chip } from "./Chip";
+import type { SearchMode } from "@/types";
 
 export interface EmptyStateProps {
     type?: "initial" | "no-results" | "no-issues" | "page-cap";
+    mode?: SearchMode;
     query?: string;
     onClear?: () => void;
     onSelectQuery?: (query: string) => void;
@@ -14,41 +16,56 @@ export interface EmptyStateProps {
 
 export function EmptyState({
     type = "initial",
+    mode = "repos",
     query = "",
     onClear,
     onSelectQuery,
     className,
 }: EmptyStateProps) {
     if (type === "initial") {
-        const exampleChips = [
+        const repoSuggestions = [
             "react state management",
-            "user:torvalds",
-            "language:typescript",
             "next.js",
+            "language:typescript",
+            "tailwind css",
             "machine learning",
         ];
+
+        const userSuggestions = [
+            "torvalds",
+            "gaearon",
+            "sindresorhus",
+            "antfu",
+            "yyx990803",
+        ];
+
+        const exampleChips = mode === "users" ? userSuggestions : repoSuggestions;
 
         return (
             <div
                 className={cn(
-                    "flex flex-col items-center justify-center p-8 md:p-14 text-center glass-1 rounded-2xl border border-white/10 max-w-2xl mx-auto my-6",
+                    "flex flex-col items-center justify-center p-6 md:p-10 text-center glass-1 rounded-2xl border border-white/10 max-w-2xl mx-auto my-2",
                     className
                 )}
             >
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent/15 text-accent mb-4">
-                    <FiSearch className="w-8 h-8" aria-hidden="true" />
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-accent/15 text-accent mb-3">
+                    <FiSearch className="w-7 h-7" aria-hidden="true" />
                 </div>
 
                 <h2 className="text-xl md:text-2xl font-bold text-content-primary mb-2">
-                    Search GitHub Repositories & Developers
+                    {mode === "users"
+                        ? "Search GitHub Developers"
+                        : "Search GitHub Repositories"}
                 </h2>
 
-                <p className="text-sm md:text-base text-content-secondary mb-6 max-w-md">
-                    Explore top open-source projects, compare stars and forks, inspect recent issues, or discover developer profiles.
+                <p className="text-sm md:text-base text-content-secondary mb-5 max-w-md">
+                    {mode === "users"
+                        ? "Discover developers, inspect public repositories, follower counts, and locations."
+                        : "Explore open-source projects, compare stars and forks, and inspect recent issues."}
                 </p>
 
                 {onSelectQuery && (
-                    <div className="flex flex-col items-center gap-2.5">
+                    <div className="flex flex-col items-center gap-2">
                         <span className="text-xs uppercase tracking-wider text-content-muted font-semibold">
                             Try searching for:
                         </span>
@@ -82,7 +99,7 @@ export function EmptyState({
                 </div>
 
                 <h2 className="text-lg md:text-xl font-semibold text-content-primary mb-2">
-                    No results found for &ldquo;{query}&rdquo;
+                    No {mode === "users" ? "users" : "repositories"} match &ldquo;{query}&rdquo;
                 </h2>
 
                 <p className="text-sm text-content-secondary mb-6">

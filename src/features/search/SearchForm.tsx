@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
-import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { Spinner } from "@/components/Spinner";
 import { ModeToggle } from "./ModeToggle";
 import { FilterBar } from "./FilterBar";
@@ -34,27 +33,54 @@ export function SearchForm({
     onClearAllFilters,
 }: SearchFormProps) {
     const [inputValue, setInputValue] = useState(initialQuery);
-    const debouncedValue = useDebouncedValue(inputValue, 400);
+    const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Sync input when initialQuery changes externally (e.g. browser back/forward or example chips)
+    // Sync input when initialQuery changes externally (e.g. suggestions clicked, clear clicked, or back/forward)
     useEffect(() => {
         setInputValue(initialQuery);
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+            debounceTimerRef.current = null;
+        }
     }, [initialQuery]);
 
-    // When debounced value changes, trigger query update
-    useEffect(() => {
-        const trimmed = debouncedValue.trim();
-        if (trimmed !== initialQuery.trim()) {
-            onQueryChange(trimmed, false);
+    // Handle typing with clean debounce timer
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setInputValue(val);
+
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
         }
-    }, [debouncedValue, initialQuery, onQueryChange]);
+
+        debounceTimerRef.current = setTimeout(() => {
+            onQueryChange(val.trim(), false);
+        }, 400);
+    };
+
+    // Clean up timer on unmount
+    useEffect(() => {
+        return () => {
+            if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current);
+            }
+        };
+    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+            debounceTimerRef.current = null;
+        }
         onQueryChange(inputValue.trim(), true);
     };
 
     const handleClear = () => {
+        if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+            debounceTimerRef.current = null;
+        }
         setInputValue("");
         onQueryChange("", true);
     };
@@ -80,7 +106,7 @@ export function SearchForm({
                         id="search-input"
                         type="text"
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={handleInputChange}
                         placeholder={
                             mode === "repos"
                                 ? "Search repositories (e.g., 'react state', 'next.js')..."

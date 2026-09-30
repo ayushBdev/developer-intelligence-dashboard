@@ -34,19 +34,76 @@ export function ResultsList({
     onClearSearch,
     onSelectExampleQuery,
 }: ResultsListProps) {
-    // 1. Initial State (no query entered)
+    const skeletonCount = mode === "repos" ? 12 : 10;
+
+    const renderSkeletons = () => (
+        <>
+            {Array.from({ length: skeletonCount }).map((_, idx) => (
+                <div
+                    key={`skeleton-${idx}`}
+                    className="p-5 rounded-2xl glass-1 border border-white/10 flex flex-col justify-between min-h-[160px]"
+                >
+                    {mode === "repos" ? (
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2.5">
+                                <Skeleton className="w-8 h-8 rounded-full shrink-0" />
+                                <div className="space-y-1.5 flex-1">
+                                    <Skeleton className="h-3 w-16" />
+                                    <Skeleton className="h-4 w-32" />
+                                </div>
+                            </div>
+                            <div className="space-y-1.5 pt-1">
+                                <Skeleton className="h-3 w-full" />
+                                <Skeleton className="h-3 w-3/4" />
+                            </div>
+                            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+                                <Skeleton className="h-3 w-20" />
+                                <Skeleton className="h-3 w-16" />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-3.5">
+                                <Skeleton className="w-14 h-14 rounded-full shrink-0" />
+                                <div className="space-y-2 flex-1">
+                                    <Skeleton className="h-4 w-28" />
+                                    <Skeleton className="h-3 w-20" />
+                                </div>
+                            </div>
+                            <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
+                                <Skeleton className="h-4 w-16" />
+                                <Skeleton className="h-4 w-16" />
+                                <Skeleton className="h-4 w-16" />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            ))}
+        </>
+    );
+
+    // 1. Initial State (no query entered): Show suggestions + skeleton loader
     if (!query.trim()) {
         return (
-            <EmptyState
-                type="initial"
-                onSelectQuery={onSelectExampleQuery}
-            />
+            <div className="flex flex-col gap-6">
+                <EmptyState
+                    type="initial"
+                    mode={mode}
+                    onSelectQuery={onSelectExampleQuery}
+                />
+                <div
+                    aria-busy="true"
+                    aria-label={`Preview skeleton for ${mode === "repos" ? "repositories" : "users"}`}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-75"
+                >
+                    {renderSkeletons()}
+                </div>
+            </div>
         );
     }
 
-    // 2. Initial Loading State (first fetch)
-    if (isLoading) {
-        const skeletonCount = mode === "repos" ? 12 : 10;
+    // 2. Loading State: when first loading or when fetching a new query
+    if (isLoading || (isFetching && items.length === 0)) {
         return (
             <div
                 aria-busy="true"
@@ -54,47 +111,7 @@ export function ResultsList({
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
                 <span className="sr-only">Loading results...</span>
-                {Array.from({ length: skeletonCount }).map((_, idx) => (
-                    <div
-                        key={`skeleton-${idx}`}
-                        className="p-5 rounded-2xl glass-1 border border-white/10 flex flex-col justify-between min-h-[160px]"
-                    >
-                        {mode === "repos" ? (
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-2.5">
-                                    <Skeleton className="w-8 h-8 rounded-full shrink-0" />
-                                    <div className="space-y-1.5 flex-1">
-                                        <Skeleton className="h-3 w-16" />
-                                        <Skeleton className="h-4 w-32" />
-                                    </div>
-                                </div>
-                                <div className="space-y-1.5 pt-1">
-                                    <Skeleton className="h-3 w-full" />
-                                    <Skeleton className="h-3 w-3/4" />
-                                </div>
-                                <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-                                    <Skeleton className="h-3 w-20" />
-                                    <Skeleton className="h-3 w-16" />
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-3.5">
-                                    <Skeleton className="w-14 h-14 rounded-full shrink-0" />
-                                    <div className="space-y-2 flex-1">
-                                        <Skeleton className="h-4 w-28" />
-                                        <Skeleton className="h-3 w-20" />
-                                    </div>
-                                </div>
-                                <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2">
-                                    <Skeleton className="h-4 w-16" />
-                                    <Skeleton className="h-4 w-16" />
-                                    <Skeleton className="h-4 w-16" />
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                ))}
+                {renderSkeletons()}
             </div>
         );
     }
@@ -111,11 +128,12 @@ export function ResultsList({
         );
     }
 
-    // 4. Empty Results
-    if (items.length === 0) {
+    // 4. Empty Results (searched but no items match)
+    if (items.length === 0 && !isFetching) {
         return (
             <EmptyState
                 type="no-results"
+                mode={mode}
                 query={query}
                 onClear={onClearSearch}
             />

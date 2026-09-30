@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { searchRepos } from "@/api/github/repos";
 import { searchUsers } from "@/api/github/users";
 import { qk } from "@/api/github/query-keys";
@@ -29,7 +29,7 @@ export function SearchPage() {
     const isUserMode = mode === "users";
     const hasQuery = Boolean(q.trim());
 
-    // Repos Query
+    // Repos Query: Only keep previous data when staying on the same query and paginating
     const reposQuery = useQuery({
         queryKey: qk.repos({ q, page, language, minStars }),
         queryFn: ({ signal }) =>
@@ -42,10 +42,18 @@ export function SearchPage() {
                 signal,
             }),
         enabled: hasQuery && isRepoMode,
-        placeholderData: keepPreviousData,
+        placeholderData: (previousData, previousQuery) => {
+            const prevParams = previousQuery?.queryKey?.[1] as
+                | { q?: string; page?: number }
+                | undefined;
+            if (prevParams && prevParams.q === q) {
+                return previousData;
+            }
+            return undefined;
+        },
     });
 
-    // Users Query
+    // Users Query: Only keep previous data when staying on the same query and paginating
     const usersQuery = useQuery({
         queryKey: qk.users({ q, page }),
         queryFn: ({ signal }) =>
@@ -56,23 +64,32 @@ export function SearchPage() {
                 signal,
             }),
         enabled: hasQuery && isUserMode,
-        placeholderData: keepPreviousData,
+        placeholderData: (previousData, previousQuery) => {
+            const prevParams = previousQuery?.queryKey?.[1] as
+                | { q?: string; page?: number }
+                | undefined;
+            if (prevParams && prevParams.q === q) {
+                return previousData;
+            }
+            return undefined;
+        },
     });
 
     const activeQuery = isRepoMode ? reposQuery : usersQuery;
-    const items = activeQuery.data?.items || [];
-    const totalCount = activeQuery.data?.totalCount || 0;
+    // When query is cleared or empty, items and totalCount must immediately be empty/zero
+    const items = hasQuery ? activeQuery.data?.items || [] : [];
+    const totalCount = hasQuery ? activeQuery.data?.totalCount || 0 : 0;
     const pageSize = isRepoMode ? REPOS_PAGE_SIZE : USERS_PAGE_SIZE;
 
-    // Handle Search Queries
+    // Handle Search Queries (always replace in URL to avoid suspense flashes and navigation transitions)
     const handleQueryChange = useCallback(
-        (newQuery: string, immediate?: boolean) => {
+        (newQuery: string) => {
             setSearchState(
                 {
                     q: newQuery,
                     page: 1, // Reset page on new query
                 },
-                { replace: !immediate }
+                { replace: true }
             );
         },
         [setSearchState]
@@ -86,7 +103,7 @@ export function SearchPage() {
                     type: newMode,
                     page: 1, // Keep query, reset page to 1
                 },
-                { replace: false }
+                { replace: true }
             );
         },
         [setSearchState]
@@ -138,7 +155,7 @@ export function SearchPage() {
                 language: undefined,
                 minStars: undefined,
             },
-            { replace: false }
+            { replace: true }
         );
     }, [setSearchState]);
 
@@ -148,7 +165,7 @@ export function SearchPage() {
                 {
                     page: newPage,
                 },
-                { replace: false }
+                { replace: true }
             );
         },
         [setSearchState]
@@ -176,7 +193,7 @@ export function SearchPage() {
                 mode={mode}
                 language={language}
                 minStars={minStars}
-                isFetching={activeQuery.isFetching}
+                isFetching={hasQuery && activeQuery.isFetching}
                 onQueryChange={handleQueryChange}
                 onModeChange={handleModeChange}
                 onLanguageChange={handleLanguageChange}
@@ -194,20 +211,20 @@ export function SearchPage() {
                     query={q}
                     mode={mode}
                     totalCount={totalCount}
-                    isLoading={activeQuery.isFetching && !activeQuery.isLoading}
+                    isLoading={hasQuery && activeQuery.isFetching && !activeQuery.isLoading}
                 />
 
                 <ResultsList
                     mode={mode}
                     query={q}
                     items={items}
-                    isLoading={activeQuery.isLoading}
-                    isFetching={activeQuery.isFetching}
-                    isError={activeQuery.isError}
+                    isLoading={hasQuery && activeQuery.isLoading}
+                    isFetching={hasQuery && activeQuery.isFetching}
+                    isError={hasQuery && activeQuery.isError}
                     error={activeQuery.error}
                     onRetry={() => activeQuery.refetch()}
                     onClearSearch={handleClearSearch}
-                    onSelectExampleQuery={(query) => handleQueryChange(query, true)}
+                    onSelectExampleQuery={(query) => handleQueryChange(query)}
                 />
 
                 {/* Pagination */}
