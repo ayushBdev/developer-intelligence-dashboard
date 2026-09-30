@@ -136,7 +136,7 @@ describe("Search feature components", () => {
     });
 
     describe("ResultsList", () => {
-        it("shows skeleton loaders preview when search query is empty", () => {
+        it("shows suggestions panel without skeletons when search query is empty", () => {
             render(
                 <ResultsList
                     mode="repos"
@@ -154,8 +154,8 @@ describe("Search feature components", () => {
 
             // Expect empty state suggestions to be present
             expect(screen.getByText(/search github repositories/i)).toBeInTheDocument();
-            // Expect skeleton preview region to be present with aria-busy="true"
-            expect(screen.getByLabelText(/preview skeleton for repositories/i)).toBeInTheDocument();
+            // Expect no skeleton preview region when query is empty
+            expect(screen.queryByLabelText(/preview skeleton/i)).not.toBeInTheDocument();
         });
 
         it("shows skeleton loaders when loading new search results", () => {

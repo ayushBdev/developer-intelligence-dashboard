@@ -82,23 +82,14 @@ export function ResultsList({
         </>
     );
 
-    // 1. Initial State (no query entered): Show suggestions + skeleton loader
+    // 1. Initial State (no query entered): Show suggestions only
     if (!query.trim()) {
         return (
-            <div className="flex flex-col gap-6">
-                <EmptyState
-                    type="initial"
-                    mode={mode}
-                    onSelectQuery={onSelectExampleQuery}
-                />
-                <div
-                    aria-busy="true"
-                    aria-label={`Preview skeleton for ${mode === "repos" ? "repositories" : "users"}`}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-75"
-                >
-                    {renderSkeletons()}
-                </div>
-            </div>
+            <EmptyState
+                type="initial"
+                mode={mode}
+                onSelectQuery={onSelectExampleQuery}
+            />
         );
     }
 
